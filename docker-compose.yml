@@ -1,0 +1,34 @@
+version: '3.3'
+
+services:
+  pm-app:
+    container_name: pm-app
+    build:
+      context: .
+    ports:
+      - '8080:8080'
+    networks:
+      - pm
+
+  pm-postgres:
+    container_name: pm-postgres
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: '123123'
+      PGDATA: /data/postgres
+      POSTGRES_DB: 'pm_db'
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - '5432:5432'
+    networks:
+      - pm
+
+volumes:
+  postgres:
+
+networks:
+  pm:
+    driver: bridge
