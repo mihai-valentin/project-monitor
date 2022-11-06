@@ -1,4 +1,4 @@
-module projects-monitor
+module github.com/mihai-valentin/projects-monitor
 
 go 1.19
 
