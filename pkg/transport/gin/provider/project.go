@@ -7,6 +7,7 @@ import (
 
 type ProjectDomain interface {
 	GetAllProjects() *entity.ProjectsList
+	GetAllProjectsPaginated(page int, count int) *entity.ProjectsPaginatedList
 	GetProjectById(id int) (*entity.Project, error)
 	SaveProject(project *entity.Project) error
 	UpdateProjectById(id int, project *entity.Project) error
@@ -19,6 +20,7 @@ func (p *Gin) LoadProjectDomain(d ProjectDomain) {
 	projects := p.router.Group("/projects")
 	{
 		projects.GET("", c.GetAllProjects)
+		projects.GET("/pag", c.GetAllProjectsPaginated)
 		projects.POST("", c.StoreProject)
 
 		projects.GET("/:id", c.GetProjectById)

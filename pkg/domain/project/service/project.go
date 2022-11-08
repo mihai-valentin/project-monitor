@@ -7,6 +7,7 @@ import (
 
 type Repository interface {
 	GetAll() *entity.ProjectsList
+	GetAllPaginated(page int, count int) *entity.ProjectsPaginatedList
 	GetById(id int) (*entity.Project, bool)
 	Save(p *entity.Project) (*entity.Project, error)
 	Update(id int, p *entity.Project) error
@@ -23,6 +24,10 @@ func New(r Repository) *Project {
 
 func (s *Project) GetAllProjects() *entity.ProjectsList {
 	return s.repository.GetAll()
+}
+
+func (s *Project) GetAllProjectsPaginated(page int, count int) *entity.ProjectsPaginatedList {
+	return s.repository.GetAllPaginated(page, count)
 }
 
 func (s *Project) GetProjectById(id int) (*entity.Project, error) {

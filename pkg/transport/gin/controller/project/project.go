@@ -17,6 +17,7 @@ type Service interface {
 	SaveProject(project *entity.Project) error
 	DeleteProjectById(id int) error
 	GetAllProjects() *entity.ProjectsList
+	GetAllProjectsPaginated(page int, count int) *entity.ProjectsPaginatedList
 	GetProjectById(id int) (*entity.Project, error)
 	UpdateProjectById(id int, project *entity.Project) error
 }
