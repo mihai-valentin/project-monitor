@@ -2,14 +2,16 @@ package main
 
 import (
 	project "github.com/mihai-valentin/projects-monitor/pkg/domain/project/provider"
-	transport "github.com/mihai-valentin/projects-monitor/pkg/transport/rest/provider"
+	ginTransport "github.com/mihai-valentin/projects-monitor/pkg/transport/gin/provider"
 )
 
 func main() {
-	gr := transport.RegisterTransport()
-	project.RegisterDomain(gr)
+	projectDomain := project.RegisterDomain()
 
-	if err := gr.Run(); err != nil {
+	transport := ginTransport.New()
+	transport.LoadProjectDomain(projectDomain)
+
+	if err := transport.Run(); err != nil {
 		panic(err)
 	}
 }
