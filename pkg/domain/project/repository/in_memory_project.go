@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"fmt"
 	"github.com/mihai-valentin/projects-monitor/pkg/domain/project/entity"
 )
 
@@ -31,7 +30,6 @@ func (r *InMemoryProject) GetById(id int) (*entity.Project, bool) {
 
 func (r *InMemoryProject) Save(p *entity.Project) (*entity.Project, error) {
 	p.Id = r.projectsList.GetIndex() + 1
-	fmt.Println(p.Id)
 	r.projectsList.Add(p)
 
 	return p, nil
