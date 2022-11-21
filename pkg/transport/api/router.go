@@ -13,7 +13,7 @@ type Router struct {
 	engine *gin.Engine
 }
 
-func New() *Router {
+func NewRouter() *Router {
 	m := middleware.New()
 
 	gr := gin.Default()
