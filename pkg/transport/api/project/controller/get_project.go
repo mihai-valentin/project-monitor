@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func (c *Project) DeleteProject(ctx *gin.Context) {
+func (c *Controller) GetProjectById(ctx *gin.Context) {
 	id, err := c.getIdParamFromContext(ctx)
 
 	if err != nil {
@@ -16,7 +16,9 @@ func (c *Project) DeleteProject(ctx *gin.Context) {
 		return
 	}
 
-	if err := c.service.DeleteProjectById(id); err != nil {
+	p, err := c.service.GetProjectById(id)
+
+	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
 			"error": err.Error(),
 		})
@@ -24,5 +26,5 @@ func (c *Project) DeleteProject(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusNoContent, gin.H{})
+	ctx.JSON(http.StatusOK, c.mapper.MapProjectToJson(p))
 }

@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func (c *Project) GetAllProjects(ctx *gin.Context) {
+func (c *Controller) GetAllProjects(ctx *gin.Context) {
 	allProjects := c.service.GetAllProjects()
 	projects := c.mapper.MapProjectsListToJson(allProjects)
 

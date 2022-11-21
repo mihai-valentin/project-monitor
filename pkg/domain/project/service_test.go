@@ -1,6 +1,7 @@
-package service
+package project
 
 import (
+	com "github.com/mihai-valentin/projects-monitor/pkg/com/project"
 	"github.com/mihai-valentin/projects-monitor/pkg/domain/project/entity"
 	"github.com/mihai-valentin/projects-monitor/pkg/domain/project/repository"
 	"testing"
@@ -8,12 +9,14 @@ import (
 
 func setUpTest() (expectedProjects entity.ProjectsList, projectService *Project) {
 	expectedProjects = *entity.FakeProjectsList(3)
-	repositoryMock := repository.Mock()
+	r := repository.Mock()
 
 	repositoryProjects := expectedProjects
-	repositoryMock.SetData(&repositoryProjects)
+	r.SetData(&repositoryProjects)
 
-	projectService = New(repositoryMock)
+	m := NewMapper()
+
+	projectService = NewService(m, r)
 
 	return
 }
@@ -33,7 +36,7 @@ func TestProject_GetAllProjects(t *testing.T) {
 		projectsSlice := projects.All()
 
 		for i, project := range expectedProjects.All() {
-			if projectsSlice[i] == project {
+			if projectsSlice[i].Id == project.Id {
 				continue
 			}
 
@@ -73,7 +76,7 @@ func TestProject_GetProjectById(t *testing.T) {
 			t.Fatal("Nil project found")
 		}
 
-		if project != expectedProject {
+		if project.Id != expectedProject.Id {
 			t.Fatal("Unexpected project found")
 		}
 	})
@@ -83,7 +86,7 @@ func TestProject_SaveProject(t *testing.T) {
 	_, service := setUpTest()
 
 	t.Run("Save project successfully", func(t *testing.T) {
-		project := &entity.Project{
+		project := &com.Project{
 			Name:        "test",
 			Description: "test",
 		}
@@ -93,9 +96,10 @@ func TestProject_SaveProject(t *testing.T) {
 		}
 
 		projectsList := service.GetAllProjects()
+
 		lastProject := projectsList.All()[projectsList.Count()-1]
 
-		if lastProject != project {
+		if lastProject.Name != project.Name || lastProject.Description != project.Description {
 			t.Fatal("Project not found in storage")
 		}
 	})
@@ -105,7 +109,7 @@ func TestProject_UpdateProjectById(t *testing.T) {
 	expectedProjects, service := setUpTest()
 
 	t.Run("Try to update nonexistent project", func(t *testing.T) {
-		err := service.UpdateProjectById(-1, &entity.Project{})
+		err := service.UpdateProjectById(-1, &com.Project{})
 
 		if err == nil {
 			t.Fatal("Expected error missing")
@@ -118,7 +122,7 @@ func TestProject_UpdateProjectById(t *testing.T) {
 
 	t.Run("Update project successfully", func(t *testing.T) {
 		project := expectedProjects.All()[0]
-		updateData := &entity.Project{
+		updateData := &com.Project{
 			Name:        "new name",
 			Description: project.Description,
 		}

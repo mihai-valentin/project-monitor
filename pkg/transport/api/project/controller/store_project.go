@@ -2,12 +2,12 @@ package project
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/mihai-valentin/projects-monitor/pkg/domain/project/entity"
+	"github.com/mihai-valentin/projects-monitor/pkg/transport/api/project/form"
 	"net/http"
 )
 
-func (c *Project) StoreProject(ctx *gin.Context) {
-	var projectForm *entity.ProjectForm
+func (c *Controller) StoreProject(ctx *gin.Context) {
+	var projectForm *form.Project
 
 	project, err := c.bindProjectFormAndMapToProject(projectForm, ctx)
 

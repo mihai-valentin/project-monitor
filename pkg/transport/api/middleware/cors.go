@@ -12,7 +12,7 @@ const (
 	allowMethods     = "POST, OPTIONS, GET, PUT, DELETE"
 )
 
-func (m *Middleware) CORS(c *gin.Context) {
+func (m *Middleware) Cors(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", allowOrigin)
 	c.Header("Access-Control-Allow-Credentials", allowCredentials)
 	c.Header("Access-Control-Allow-Headers", allowHeaders)

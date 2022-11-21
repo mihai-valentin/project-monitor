@@ -1,6 +1,6 @@
-package entity
+package form
 
-type ProjectForm struct {
+type Project struct {
 	Name        string
 	Description string
 }

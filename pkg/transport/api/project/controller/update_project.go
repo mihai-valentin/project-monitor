@@ -2,11 +2,11 @@ package project
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/mihai-valentin/projects-monitor/pkg/domain/project/entity"
+	"github.com/mihai-valentin/projects-monitor/pkg/transport/api/project/form"
 	"net/http"
 )
 
-func (c *Project) UpdateProject(ctx *gin.Context) {
+func (c *Controller) UpdateProject(ctx *gin.Context) {
 	id, err := c.getIdParamFromContext(ctx)
 
 	if err != nil {
@@ -17,7 +17,7 @@ func (c *Project) UpdateProject(ctx *gin.Context) {
 		return
 	}
 
-	var projectForm *entity.ProjectForm
+	var projectForm *form.Project
 
 	project, err := c.bindProjectFormAndMapToProject(projectForm, ctx)
 

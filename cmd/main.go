@@ -1,15 +1,17 @@
 package main
 
 import (
-	project "github.com/mihai-valentin/projects-monitor/pkg/domain/project/provider"
-	ginTransport "github.com/mihai-valentin/projects-monitor/pkg/transport/gin/provider"
+	projectDomain "github.com/mihai-valentin/projects-monitor/pkg/domain/project"
+	"github.com/mihai-valentin/projects-monitor/pkg/transport/api"
+	projectController "github.com/mihai-valentin/projects-monitor/pkg/transport/api/project"
 )
 
 func main() {
-	projectDomain := project.RegisterDomain()
+	pd := projectDomain.New()
+	pc := projectController.New(pd)
 
-	transport := ginTransport.New()
-	transport.LoadProjectDomain(projectDomain)
+	transport := api.New()
+	transport.RegisterController(pc)
 
 	if err := transport.Run(); err != nil {
 		panic(err)
