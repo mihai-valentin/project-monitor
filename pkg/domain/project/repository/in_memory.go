@@ -1,6 +1,9 @@
 package repository
 
-import "github.com/mihai-valentin/projects-monitor/pkg/domain/project/entity"
+import (
+	"github.com/mihai-valentin/projects-monitor/pkg/domain/project/entity"
+	"math"
+)
 
 type InMemory struct {
 	projectsList *entity.ProjectsList
@@ -8,7 +11,7 @@ type InMemory struct {
 
 func New() *InMemory {
 	return &InMemory{
-		projectsList: entity.FakeProjectsList(10),
+		projectsList: entity.NewFakeProjectsList(10),
 	}
 }
 
@@ -54,4 +57,25 @@ func (r *InMemory) DeleteById(id int) {
 	}
 
 	r.projectsList.Remove(project)
+}
+
+func (r *InMemory) GetPaginated(page int, perPage int) *entity.ProjectsPaginatedList {
+	startIndex := (page - 1) * perPage
+	endIndex := startIndex + perPage
+
+	totalPages := math.Ceil(float64(r.projectsList.Count()) / float64(perPage))
+
+	ppl := entity.NewProjectsPaginatedList(perPage, int(totalPages), page)
+
+	for i := startIndex; i < endIndex; i++ {
+		p, ok := r.projectsList.Get(i)
+
+		if !ok {
+			continue
+		}
+
+		ppl.Items = append(ppl.Items, p)
+	}
+
+	return ppl
 }

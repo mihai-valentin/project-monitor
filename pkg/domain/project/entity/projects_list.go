@@ -1,7 +1,5 @@
 package entity
 
-import "fmt"
-
 type ProjectsList struct {
 	index    int
 	projects []*Project
@@ -12,19 +10,6 @@ func NewProjectsList() *ProjectsList {
 		index:    0,
 		projects: make([]*Project, 0),
 	}
-}
-
-func FakeProjectsList(len int) *ProjectsList {
-	projectsList := make([]*Project, 0)
-
-	for i := 0; i < len; i++ {
-		fakeProjectName := fmt.Sprintf("%d_project", i)
-		fakeProject := NewProject(i+1, fakeProjectName, "Description...")
-
-		projectsList = append(projectsList, fakeProject)
-	}
-
-	return &ProjectsList{index: len, projects: projectsList}
 }
 
 func (pl *ProjectsList) CloneEmpty() *ProjectsList {
@@ -63,4 +48,12 @@ func (pl *ProjectsList) Remove(p *Project) {
 	}
 
 	pl.projects = newProjectsList
+}
+
+func (pl *ProjectsList) Get(i int) (*Project, bool) {
+	if len(pl.projects) < i {
+		return nil, false
+	}
+
+	return pl.projects[i], true
 }

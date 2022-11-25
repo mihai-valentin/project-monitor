@@ -11,6 +11,7 @@ type Repository interface {
 	Save(p entity.Project) (*entity.Project, error)
 	Update(id int, p entity.Project) error
 	DeleteById(id int)
+	GetPaginated(page int, perPage int) *entity.ProjectsPaginatedList
 }
 
 type Project struct {
@@ -59,4 +60,8 @@ func (s *Project) DeleteProjectById(id int) error {
 	s.repository.DeleteById(id)
 
 	return nil
+}
+
+func (s *Project) GetAllProjectsPaginated(page int, perPage int) *entity.ProjectsPaginatedList {
+	return s.repository.GetPaginated(page, perPage)
 }

@@ -17,6 +17,9 @@ func main() {
 	plc := controller.NewProjectsListController(pd)
 	r.RegisterController(plc)
 
+	pplc := controller.NewProjectsPaginatedList(pd)
+	r.RegisterController(pplc)
+
 	if err := r.Run(); err != nil {
 		panic(err)
 	}

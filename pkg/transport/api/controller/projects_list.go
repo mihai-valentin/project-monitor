@@ -54,5 +54,5 @@ func (c *ProjectsList) storeProject(ctx *gin.Context) {
 func (c *ProjectsList) getAllProjects(ctx *gin.Context) {
 	pl := c.service.GetAllProjects()
 
-	ctx.JSON(http.StatusOK, pl)
+	ctx.JSON(http.StatusOK, pl.All())
 }

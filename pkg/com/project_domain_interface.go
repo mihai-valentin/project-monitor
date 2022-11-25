@@ -8,4 +8,5 @@ type Project interface {
 	GetAllProjects() *entity.ProjectsList
 	GetProjectById(id int) (*entity.Project, error)
 	UpdateProjectById(id int, p entity.Project) error
+	GetAllProjectsPaginated(page int, perPage int) *entity.ProjectsPaginatedList
 }
