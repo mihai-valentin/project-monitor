@@ -4,24 +4,24 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	dto "github.com/mihai-valentin/projects-monitor/pkg/com/project"
-	"github.com/mihai-valentin/projects-monitor/pkg/transport/api/project"
+	mapper "github.com/mihai-valentin/projects-monitor/pkg/transport/api/project"
 	"github.com/mihai-valentin/projects-monitor/pkg/transport/api/project/form"
 	"strconv"
 )
 
 type Controller struct {
-	mapper  *project.Mapper
-	service dto.Domain
+	*project
+	*projectsList
 }
 
-func NewController(m *project.Mapper, s dto.Domain) *Controller {
+func NewController(m *mapper.Mapper, s dto.Domain) *Controller {
 	return &Controller{
-		mapper:  m,
-		service: s,
+		project:      newProjectController(m, s),
+		projectsList: newProjectsListController(m, s),
 	}
 }
 
-func (c *Controller) getIdParamFromContext(ctx *gin.Context) (int, error) {
+func getIdParamFromContext(ctx *gin.Context) (int, error) {
 	idRaw := ctx.Param("id")
 	id, err := strconv.Atoi(idRaw)
 
@@ -32,10 +32,10 @@ func (c *Controller) getIdParamFromContext(ctx *gin.Context) (int, error) {
 	return id, nil
 }
 
-func (c *Controller) bindProjectFormAndMapToProject(f *form.Project, ctx *gin.Context) (*dto.Project, error) {
+func bindProjectFormAndMapToProject(ctx *gin.Context, f *form.Project, m *mapper.Mapper) (*dto.Project, error) {
 	if err := ctx.ShouldBind(f); err != nil {
 		return nil, err
 	}
 
-	return c.mapper.MapFormToProject(f), nil
+	return m.MapFormToProject(f), nil
 }

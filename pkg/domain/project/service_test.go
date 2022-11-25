@@ -100,7 +100,7 @@ func TestProject_SaveProject(t *testing.T) {
 		lastProject := projectsList.All()[projectsList.Count()-1]
 
 		if lastProject.Name != project.Name || lastProject.Description != project.Description {
-			t.Fatal("Project not found in storage")
+			t.Fatal("project not found in storage")
 		}
 	})
 }
@@ -134,7 +134,7 @@ func TestProject_UpdateProjectById(t *testing.T) {
 		updatedProject, _ := service.GetProjectById(project.Id)
 
 		if updatedProject == nil || updatedProject.Name != updateData.Name {
-			t.Fatal("Project was not updated in the storage")
+			t.Fatal("project was not updated in the storage")
 		}
 	})
 }
@@ -164,7 +164,7 @@ func TestProject_DeleteProjectById(t *testing.T) {
 		deletedProject, _ := service.GetProjectById(project.Id)
 
 		if deletedProject != nil {
-			t.Fatal("Project was not removed from the storage")
+			t.Fatal("project was not removed from the storage")
 		}
 	})
 }
