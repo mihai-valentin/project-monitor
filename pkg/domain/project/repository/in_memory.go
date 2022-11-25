@@ -2,21 +2,21 @@ package repository
 
 import "github.com/mihai-valentin/projects-monitor/pkg/domain/project/entity"
 
-type InMemoryProject struct {
+type InMemory struct {
 	projectsList *entity.ProjectsList
 }
 
-func New() *InMemoryProject {
-	return &InMemoryProject{
+func New() *InMemory {
+	return &InMemory{
 		projectsList: entity.FakeProjectsList(10),
 	}
 }
 
-func (r *InMemoryProject) GetAll() *entity.ProjectsList {
+func (r *InMemory) GetAll() *entity.ProjectsList {
 	return r.projectsList
 }
 
-func (r *InMemoryProject) GetById(id int) (*entity.Project, bool) {
+func (r *InMemory) GetById(id int) (*entity.Project, bool) {
 	for _, project := range r.projectsList.All() {
 		if project.Id == id {
 			return project, true
@@ -26,14 +26,14 @@ func (r *InMemoryProject) GetById(id int) (*entity.Project, bool) {
 	return nil, false
 }
 
-func (r *InMemoryProject) Save(p *entity.Project) (*entity.Project, error) {
+func (r *InMemory) Save(p entity.Project) (*entity.Project, error) {
 	p.Id = r.projectsList.GetIndex() + 1
 	r.projectsList.Add(p)
 
-	return p, nil
+	return &p, nil
 }
 
-func (r *InMemoryProject) Update(id int, p *entity.Project) error {
+func (r *InMemory) Update(id int, p entity.Project) error {
 	project, ok := r.GetById(id)
 
 	if !ok {
@@ -46,7 +46,7 @@ func (r *InMemoryProject) Update(id int, p *entity.Project) error {
 	return nil
 }
 
-func (r *InMemoryProject) DeleteById(id int) {
+func (r *InMemory) DeleteById(id int) {
 	project, ok := r.GetById(id)
 
 	if !ok {

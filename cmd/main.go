@@ -1,19 +1,23 @@
 package main
 
 import (
-	projectDomain "github.com/mihai-valentin/projects-monitor/pkg/domain/project"
+	"github.com/mihai-valentin/projects-monitor/pkg/domain/project"
 	transport "github.com/mihai-valentin/projects-monitor/pkg/transport/api"
-	projectApi "github.com/mihai-valentin/projects-monitor/pkg/transport/api/project"
+	"github.com/mihai-valentin/projects-monitor/pkg/transport/api/controller"
 )
 
 func main() {
-	pd := projectDomain.New()
-	pc := projectApi.New(pd)
+	r := transport.NewRouter()
 
-	router := transport.NewRouter()
-	router.RegisterController(pc)
+	pd := project.New()
 
-	if err := router.Run(); err != nil {
+	pc := controller.NewProjectController(pd)
+	r.RegisterController(pc)
+
+	plc := controller.NewProjectsListController(pd)
+	r.RegisterController(plc)
+
+	if err := r.Run(); err != nil {
 		panic(err)
 	}
 }

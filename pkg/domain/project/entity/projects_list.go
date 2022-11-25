@@ -46,9 +46,9 @@ func (pl *ProjectsList) All() []*Project {
 	return pl.projects
 }
 
-func (pl *ProjectsList) Add(p *Project) {
+func (pl *ProjectsList) Add(p Project) {
 	pl.index += 1
-	pl.projects = append(pl.projects, p)
+	pl.projects = append(pl.projects, &p)
 }
 
 func (pl *ProjectsList) Remove(p *Project) {
